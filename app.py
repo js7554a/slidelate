@@ -5,7 +5,8 @@ import settings
 from api.todo.endpoints import Todo, TodoList
 from api.user.endpoints import User, UserList
 from api.upload.endpoints import UploadList
-from api.restful import api,log
+from flask_restful import Api
+from api.restful import log
 from database import db
 
 app = Flask(__name__)
@@ -24,7 +25,7 @@ def configure_app(flask_app):
 def initialize_app(flask_app):
     configure_app(flask_app)
     blueprint = Blueprint('api.v1', __name__, url_prefix='/api')
-    api.init_app(blueprint)
+    api = Api(blueprint)
     ## register all app URLs
     api.add_resource(TodoList, '/todos')
     api.add_resource(Todo, '/todos/<todo_id>')
