@@ -23,7 +23,7 @@ def configure_app(flask_app):
 
 def initialize_app(flask_app):
     configure_app(flask_app)
-    blueprint = Blueprint('api', __name__, url_prefix='/api')
+    blueprint = Blueprint(api, __name__, url_prefix='/api')
     api.init_app(blueprint)
     ## register all app URLs
     api.add_resource(TodoList, '/todos')
