@@ -7,6 +7,7 @@ from sqlalchemy.orm.exc import NoResultFound
 log = logging.getLogger(__name__)
 
 api = Api()
+
 """
 @api.errorhandler
 def default_error_handler(e):
