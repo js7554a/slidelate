@@ -5,11 +5,11 @@ import settings
 from api.todo.endpoints import Todo, TodoList
 from api.user.endpoints import User, UserList
 from api.upload.endpoints import UploadList
-from api.restful import api
+from api.restful import api,log
 from database import db
 
 app = Flask(__name__)
-#logging.config.fileConfig('logging.conf')
+logging.config.fileConfig('logging.conf')
 log = logging.getLogger(__name__)
 
 
@@ -33,11 +33,10 @@ def initialize_app(flask_app):
     api.add_resource(UploadList, '/upload')
     flask_app.register_blueprint(blueprint)
 
-    #db.app = flask_app
-    #db.init_app(flask_app)
+    db.app = flask_app
+    db.init_app(flask_app)
     #db.drop_all()
-    #db.create_all()
-    #return flask_app
+    db.create_all()
 
 def main():
     initialize_app(app)
