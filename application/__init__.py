@@ -19,9 +19,11 @@ def create_app(environment=None):
 
 	from .resources.todos import Todo, TodoList
 	from .resources.users import UserList
+	from .resources.uploads import UploadList
 	api.add_resource(TodoList, '/todos')
 	api.add_resource(Todo, '/todos/<todo_id>')
 	api.add_resource(UserList, '/users')
+	api.add_resource(UploadList, '/uploads')
 	app.register_blueprint(api_bp)
 
 	return app

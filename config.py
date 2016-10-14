@@ -10,7 +10,7 @@ class Config(object):
     URL_PREFIX = '/api'
     PROJECT_ROOT = path.abspath(path.dirname(__file__))
     TEMPLATE_FOLDER = path.join(PROJECT_ROOT, 'templates')
-    UPLOAD_FOLDER = path.join(PROJECT_ROOT, 'media/photos')
+    UPLOAD_FOLDER = path.join(PROJECT_ROOT, 'application/media/photos')
     ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_DATABASE_URI = 'postgresql://jsilva:jx3t2016@localhost/slidelate'
