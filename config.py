@@ -12,7 +12,7 @@ class Config(object):
     TEMPLATE_FOLDER = path.join(PROJECT_ROOT, 'templates')
     UPLOAD_FOLDER = path.join(PROJECT_ROOT, 'media/photos')
     ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-    #SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_DATABASE_URI = 'postgresql://jsilva:jx3t2016@localhost/slidelate'
 
 
@@ -22,7 +22,7 @@ class Development(Config):
 
 
 
-class IS_HEROKU(Config):
+class Production(Config):
 	SECRET_KEY = 'production'
 	try:
 		SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
