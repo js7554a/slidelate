@@ -23,7 +23,7 @@ def configure_app(flask_app):
 
 def initialize_app(flask_app):
     configure_app(flask_app)
-    blueprint = Blueprint(api, __name__, url_prefix='/api')
+    blueprint = Blueprint('api', __name__, url_prefix='/api')
     api.init_app(blueprint)
     ## register all app URLs
     api.add_resource(TodoList, '/todos')
@@ -33,11 +33,11 @@ def initialize_app(flask_app):
     api.add_resource(UploadList, '/upload')
     flask_app.register_blueprint(blueprint)
 
-    db.app = flask_app
-    db.init_app(flask_app)
+    #db.app = flask_app
+    #db.init_app(flask_app)
     #db.drop_all()
-    db.create_all()
-    return flask_app
+    #db.create_all()
+    #return flask_app
 
 def main():
     initialize_app(app)
