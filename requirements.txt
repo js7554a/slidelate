@@ -1,8 +1,9 @@
-gunicorn
-Flask>=0.10.1
-flask-restful
-Jinja2>=2.7.1
-MarkupSafe>=0.18
-Werkzeug>=0.9.4
-itsdangerous>=0.23
-wsgiref>=0.1.2
+Flask>=0.11.1
+Flask-RESTful>=0.3.5
+Flask-SQLAlchemy>=2.1
+itsdangerous>=0.24
+Jinja2>=2.8
+passlib>=1.6.5
+psycopg2>=2.6.2
+SQLAlchemy>=1.1.1
+Werkzeug>=0.11.11

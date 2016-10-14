@@ -1,8 +1,4 @@
-from flask import Flask
-from flask_restful import reqparse, abort, Api, Resource
-
-app = Flask(__name__)
-api = Api(app)
+from flask_restful import reqparse, abort, Resource
 
 TODOS = {
     'todo1': {'task': 'build an API'},
@@ -50,13 +46,3 @@ class TodoList(Resource):
         todo_id = 'todo%i' % todo_id
         TODOS[todo_id] = {'task': args['task']}
         return TODOS[todo_id], 201
-
-##
-## Actually setup the Api resource routing here
-##
-api.add_resource(TodoList, '/todos')
-api.add_resource(Todo, '/todos/<todo_id>')
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
