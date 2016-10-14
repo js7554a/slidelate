@@ -18,8 +18,10 @@ def create_app(environment=None):
 	db.init_app(app)
 
 	from .resources.todos import Todo, TodoList
+	from .resources.users import UserList
 	api.add_resource(TodoList, '/todos')
 	api.add_resource(Todo, '/todos/<todo_id>')
+	api.add_resource(UserList, '/users')
 	app.register_blueprint(api_bp)
 
 	return app
