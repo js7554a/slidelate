@@ -2,11 +2,11 @@ import logging.config
 
 from flask import Flask, Blueprint
 import settings
-from app.api.todo.endpoints import Todo, TodoList
-from app.api.user.endpoints import User, UserList
-from app.api.upload.endpoints import UploadList
-from app.api.restful import api
-from app.database import db
+from api.todo.endpoints import Todo, TodoList
+from api.user.endpoints import User, UserList
+from api.upload.endpoints import UploadList
+from api.restful import api
+from database import db
 
 app = Flask(__name__)
 #logging.config.fileConfig('logging.conf')
