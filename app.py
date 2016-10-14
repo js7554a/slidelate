@@ -36,8 +36,8 @@ def initialize_app(flask_app):
 
     db.app = flask_app
     db.init_app(flask_app)
-    #db.drop_all()
-    #db.create_all()
+    db.drop_all()
+    db.create_all()
 
 def main():
     initialize_app(app)
