@@ -1,15 +1,14 @@
 import logging.config
 
 from flask import Flask, Blueprint
-from flask_restful import Resource, Api
 import settings
 from api.todo.endpoints import Todo, TodoList
 from api.user.endpoints import User, UserList
 from api.upload.endpoints import UploadList
+from api.restful import api
 from database import db
 
 app = Flask(__name__)
-api = Api()
 #logging.config.fileConfig('logging.conf')
 log = logging.getLogger(__name__)
 
