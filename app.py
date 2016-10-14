@@ -1,6 +1,7 @@
 import logging.config
 
 from flask import Flask, Blueprint
+from flask_restful import Resource
 import settings
 from api.todo.endpoints import Todo, TodoList
 from api.user.endpoints import User, UserList
@@ -35,7 +36,7 @@ def initialize_app(flask_app):
 
     db.app = flask_app
     db.init_app(flask_app)
-    db.drop_all()
+    #db.drop_all()
     db.create_all()
 
 def main():
