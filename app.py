@@ -33,10 +33,10 @@ def initialize_app(flask_app):
     api.add_resource(UploadList, '/upload')
     flask_app.register_blueprint(blueprint)
 
-    #db.app = flask_app
-    #db.init_app(flask_app)
-    #db.drop_all()
-    #db.create_all()
+    db.app = flask_app
+    db.init_app(flask_app)
+    db.drop_all()
+    db.create_all()
 
 def main():
     initialize_app(app)
