@@ -11,9 +11,9 @@ def create_app(environment=None):
 	app = Flask(__name__)
 	api_bp = Blueprint('api.v1', __name__, url_prefix='/api')
 	api.init_app(api_bp)
-	if not environment:
-		environment = os.environ.get('IS_HEROKU', 'development')
-	app.config.from_object('config.{}'.format(environment.capitalize()))
+	#if not environment:
+	#	environment = os.environ.get('IS_HEROKU', 'development')
+	#app.config.from_object('config.{}'.format(environment.capitalize()))
 
 	db.init_app(app)
 
