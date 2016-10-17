@@ -2,10 +2,16 @@ from flask import current_app
 from flask_restful import reqparse, request, abort, Resource, fields, marshal_with
 from application import db
 from werkzeug.utils import secure_filename
+from application.libs import gcv_label
+
 import os
 
 parser = reqparse.RequestParser()
 parser.add_argument('file')
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
 # Todo
 # shows a single todo item and lets you delete a todo item
@@ -37,12 +43,17 @@ class UploadList(Resource):
     """
 
     def post(self):
+        API_KEY = 'AIzaSyBHdeK5TxbfowdrbBYw-IclID0oIC5dHaA'
+        DEST_LANG = 'ko'
         if 'file' not in request.files:
             return {'message': 'no file found'}
 
         file = request.files['file']
-
+        
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            return {'filename' : filename}, 201
+            response_output = gcv_label.fetch_image_data(os.path.join(current_app.config['UPLOAD_FOLDER'], filename), print_output=False, dest_lang=DEST_LANG,
+                       api_key = API_KEY)
+            #$output = exec("python imageProcess.py photos/nixon-resignation-letter-1974.jpg -d ko -k AIzaSyBHdeK5TxbfowdrbBYw-IclID0oIC5dHaA 2>&1");
+            return response_output, 201

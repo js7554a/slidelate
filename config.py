@@ -15,7 +15,6 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_DATABASE_URI = 'postgresql://jsilva:jx3t2016@localhost/slidelate'
 
-
 class Development(Config):
     DEBUG = True
     SECRET_KEY = 'development'

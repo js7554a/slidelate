@@ -1,4 +1,3 @@
-#need to run SET GOOGLE_APPLICATION_CREDENTIALS=C:\Users\Jake\projects\slidelate\credentials.json
 import os
 
 from flask import Flask, Blueprint
