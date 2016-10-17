@@ -125,84 +125,84 @@ None, dest_lang = None, api_key = None):
     gt_translation = None
 
     # get initial image data from Google Cloud Vision API (labels, text, and logos)
-    with open(photo_file, 'rb') as image:
-        image_content = base64.b64encode(image.read())
-        service_request = service.images().annotate(body={
-            'requests': [{
-                'image': {
-                    'content': image_content.decode('UTF-8')
-                },
-                'features': [
-                {
-                    'type': 'LABEL_DETECTION',
-                    'maxResults': nlab
-                },
-                {
-                    'type': 'TEXT_DETECTION',
-                    'maxResults': 1
-                },
-                {
-                    'type': 'LOGO_DETECTION',
-                    'maxResults': nlogo
-                }
-                ]
-            }]
-        })
-        gcv_response = service_request.execute()
-
-        # check if error in GCV response; if so, return a response with the error message
-        if 'error' in gcv_response['responses']:
-            response_out = {
-                'status': 'error',
-                'data': None,
-                'message': response['error']['message']
-            }
-            return response_out
-
-        # extract relevant data from gcv response
-        try:
-            full_text = gcv_response['responses'][0]['textAnnotations'][0]['description']
-        except KeyError:
-            pass
-        try:
-            labels = [x['description'] for x in gcv_response['responses'][0]['labelAnnotations']]
-        except KeyError:
-            pass
-        try:
-            logos = [x['description'] for x in gcv_response['responses'][0]['logoAnnotations']]
-        except KeyError:
-            pass
-
-        # using text from GCV response, get named entitites and translate text, if requested
-        if full_text:
-            clean_text = full_text.replace('\n', ' ')
-            response_gnl = gnl(full_text, print_output=True)
-            text_lang = response_gnl['data']['lang']
-            if dest_lang != text_lang:
-                gt_translation = gt(clean_text, api_key, dest_lang)
-
-        # construct JSEND-compliant JSON response
-        response_out = {
-            'status': 'success',
-            'data': {
-                'full_text': full_text,
-                'labels': labels,
-                'logos': logos,
-                #'lang': response_gnl.get('data').get('lang'),
-                #'entities': response_gnl.get('data').get('entities'),
-                #'wikipedia': response_gnl.get('data').get('wikipedia'),
-                'dest_lang': dest_lang,
-                'translation': gt_translation
+    
+    image_content = photo_file
+    service_request = service.images().annotate(body={
+        'requests': [{
+            'image': {
+                'content': image_content.decode('UTF-8')
             },
-            'message': None
+            'features': [
+            {
+                'type': 'LABEL_DETECTION',
+                'maxResults': nlab
+            },
+            {
+                'type': 'TEXT_DETECTION',
+                'maxResults': 1
+            },
+            {
+                'type': 'LOGO_DETECTION',
+                'maxResults': nlogo
+            }
+            ]
+        }]
+    })
+    gcv_response = service_request.execute()
+
+    # check if error in GCV response; if so, return a response with the error message
+    if 'error' in gcv_response['responses']:
+        response_out = {
+            'status': 'error',
+            'data': None,
+            'message': response['error']['message']
         }
-
-        # print output; if requested
-        if print_output:
-            print('IMAGE_RESULTS: \n\n')
-            pprint.pprint(response_out)
-
         return response_out
+
+    # extract relevant data from gcv response
+    try:
+        full_text = gcv_response['responses'][0]['textAnnotations'][0]['description']
+    except KeyError:
+        pass
+    try:
+        labels = [x['description'] for x in gcv_response['responses'][0]['labelAnnotations']]
+    except KeyError:
+        pass
+    try:
+        logos = [x['description'] for x in gcv_response['responses'][0]['logoAnnotations']]
+    except KeyError:
+        pass
+
+    # using text from GCV response, get named entitites and translate text, if requested
+    if full_text:
+        clean_text = full_text.replace('\n', ' ')
+        response_gnl = gnl(full_text, print_output=True)
+        text_lang = response_gnl['data']['lang']
+        if dest_lang != text_lang:
+            gt_translation = gt(clean_text, api_key, dest_lang)
+
+    # construct JSEND-compliant JSON response
+    response_out = {
+        'status': 'success',
+        'data': {
+            'full_text': full_text,
+            'labels': labels,
+            'logos': logos,
+            'lang': response_gnl.get('data').get('lang'),
+            'entities': response_gnl.get('data').get('entities'),
+            'wikipedia': response_gnl.get('data').get('wikipedia'),
+            'dest_lang': dest_lang,
+            'translation': gt_translation
+        },
+        'message': None
+    }
+
+    # print output; if requested
+    if print_output:
+        print('IMAGE_RESULTS: \n\n')
+        pprint.pprint(response_out)
+
+    return response_out
 
 
 if __name__ == '__main__':

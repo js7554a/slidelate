@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from application.libs import gcv_label
 
 import os
+import base64
 
 parser = reqparse.RequestParser()
 parser.add_argument('file')
@@ -49,11 +50,13 @@ class UploadList(Resource):
             return {'message': 'no file found'}
 
         file = request.files['file']
-        
         if file:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            response_output = gcv_label.fetch_image_data(os.path.join(current_app.config['UPLOAD_FOLDER'], filename), print_output=False, dest_lang=DEST_LANG,
+            image_content = base64.b64encode(file.read())
+            #filename = secure_filename(file.filename)
+            #file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+            #response_output = gcv_label.fetch_image_data(os.path.join(current_app.config['UPLOAD_FOLDER'], filename), print_output=False, dest_lang=DEST_LANG,
+            #           api_key = API_KEY)
+            response_output = gcv_label.fetch_image_data(image_content, print_output=False, dest_lang=DEST_LANG,
                        api_key = API_KEY)
             #$output = exec("python imageProcess.py photos/nixon-resignation-letter-1974.jpg -d ko -k AIzaSyBHdeK5TxbfowdrbBYw-IclID0oIC5dHaA 2>&1");
             return response_output, 201
