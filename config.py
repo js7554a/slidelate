@@ -17,7 +17,7 @@ class Config(object):
 
 class Development(Config):
     DEBUG = True
-    SECRET_KEY = 'development'
+    SECRET_KEY = os.urandom(24)
 
 
 

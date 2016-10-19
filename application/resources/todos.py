@@ -1,4 +1,5 @@
 from flask_restful import reqparse, abort, Resource
+from application import auth
 
 TODOS = {
     'todo1': {'task': 'build an API'},
@@ -37,6 +38,7 @@ class Todo(Resource):
 # TodoList
 # shows a list of all todos, and lets you POST to add new tasks
 class TodoList(Resource):
+    @auth.login_required
     def get(self):
         return TODOS
 

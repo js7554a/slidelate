@@ -1,19 +1,13 @@
 from flask_restful import reqparse, abort, Resource, fields, marshal_with
+from flask import g, jsonify
 from application.database.models import User as u
 from application import db
-from flask import jsonify
+from application import auth
 
 user_fields = {
     'username': fields.String,
     'password_hash' : fields.String
 }
-
-TODOS = {
-    'todo1': {'task': 'build an API'},
-    'todo2': {'task': '?????'},
-    'todo3': {'task': 'profit!'},
-}
-
 
 def abort_if_todo_doesnt_exist(todo_id):
     if todo_id not in TODOS:
@@ -66,3 +60,11 @@ class UserList(Resource):
         db.session.add(user)
         db.session.commit()
         return {'username': user.username}, 201
+
+    
+
+class UserLogin(Resource):
+    @auth.login_required
+    def get(self):
+        token = g.user.generate_auth_token()
+        return jsonify({ 'token': token.decode('ascii') })
