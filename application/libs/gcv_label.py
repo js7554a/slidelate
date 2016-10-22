@@ -173,6 +173,7 @@ None, dest_lang = None, api_key = None):
     except KeyError:
         pass
 
+    response_gnl = None
     # using text from GCV response, get named entitites and translate text, if requested
     if full_text:
         clean_text = full_text.replace('\n', ' ')
@@ -181,6 +182,15 @@ None, dest_lang = None, api_key = None):
         if dest_lang != text_lang:
             gt_translation = gt(clean_text, api_key, dest_lang)
 
+    lang = None
+    entities = None
+    wikipedia = None
+    
+    if response_gnl:
+        lang = response_gnl.get('data').get('lang')
+        entities = response_gnl.get('data').get('entities')
+        wikipedia = response_gnl.get('data').get('wikipedia')
+
     # construct JSEND-compliant JSON response
     response_out = {
         'status': 'success',
@@ -188,9 +198,9 @@ None, dest_lang = None, api_key = None):
             'full_text': full_text,
             'labels': labels,
             'logos': logos,
-            'lang': response_gnl.get('data').get('lang'),
-            'entities': response_gnl.get('data').get('entities'),
-            'wikipedia': response_gnl.get('data').get('wikipedia'),
+            'lang': lang,
+            'entities': entities,
+            'wikipedia': wikipedia,
             'dest_lang': dest_lang,
             'translation': gt_translation
         },

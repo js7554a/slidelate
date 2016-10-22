@@ -3,9 +3,13 @@ from flask_restful import reqparse, request, abort, Resource, fields, marshal_wi
 from application import db
 from werkzeug.utils import secure_filename
 from application.libs import gcv_label
-
+import PIL
+from PIL import Image
+import io
+from io import BytesIO
 import os
 import base64
+import cStringIO
 
 parser = reqparse.RequestParser()
 parser.add_argument('file')
@@ -13,6 +17,17 @@ parser.add_argument('file')
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+def resize_uploaded_image(file):
+    output = io.BytesIO()
+    basewidth = 900 
+    img = Image.open(file) 
+    wpercent = (basewidth / float(img.size[0])) 
+    hsize = int((float(img.size[1]) * float(wpercent))) 
+    img = img.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+    img.save(output, format='JPEG')
+    #img.seek0()
+    return output.getvalue()
 
 # Todo
 # shows a single todo item and lets you delete a todo item
@@ -51,9 +66,10 @@ class UploadList(Resource):
 
         file = request.files['file']
         if file:
-            image_content = base64.b64encode(file.read())
-            #filename = secure_filename(file.filename)
-            #file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+
+            image_content = base64.b64encode(resize_uploaded_image(file))
+            filename = secure_filename(file.filename)
+            #image_content.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
             #response_output = gcv_label.fetch_image_data(os.path.join(current_app.config['UPLOAD_FOLDER'], filename), print_output=False, dest_lang=DEST_LANG,
             #           api_key = API_KEY)
             response_output = gcv_label.fetch_image_data(image_content, print_output=False, dest_lang=DEST_LANG,
